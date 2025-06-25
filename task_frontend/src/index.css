@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* React DatePicker customization */
+.react-datepicker {
+  font-family: 'Inter', sans-serif;
+  border: 1px solid #d1c7b7;
+}
+
+.react-datepicker__header {
+  background-color: #f9f7f3;
+  border-bottom: 1px solid #d1c7b7;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: #102a43;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #f0b429;
+  color: #102a43;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #de911d;
+}
+
+.react-datepicker__navigation--previous {
+  border-right-color: #102a43;
+}
+
+.react-datepicker__navigation--next {
+  border-left-color: #102a43;
+}
