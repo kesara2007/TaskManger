@@ -1,3 +1,4 @@
+// App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Dashboard from './pages/Dashboard'
@@ -6,9 +7,8 @@ import Register from './pages/Register'
 import Tasks from './pages/Tasks'
 import Categories from './pages/Categories'
 import Profile from './pages/Profile'
-import PrivateRoute from './components/PrivateRoute'
+import PrivateRoute from './components/PrivateRoute.jsx'
 import Navbar from './components/Navbar'
-import TestTailwind from './TestTailwind'
 
 function App() {
   return (
@@ -18,10 +18,9 @@ function App() {
           <Navbar />
           <div className="container mx-auto px-4 py-8">
             <Routes>
-              <Route path='/TestTailwind' element={<TestTailwind />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/" element={<PrivateRoute />}>
+              <Route element={<PrivateRoute />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/tasks" element={<Tasks />} />
                 <Route path="/categories" element={<Categories />} />

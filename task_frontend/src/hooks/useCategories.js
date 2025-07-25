@@ -24,22 +24,23 @@ export const useCategories = () => {
       setIsLoading(false)
     }
   }
-
-  const createCategory = async (name) => {
-    try {
-      const res = await api.post('/category/cp', { name }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      setCategories([res.data.category, ...categories])
-      return { success: true, category: res.data.category }
-    } catch (err) {
-      return { success: false, message: err.response?.data?.message || 'Failed to create category' }
-    }
+  
+const createCategory = async ({ name }) => {
+  try {
+    const res = await api.post('/category/cp', { name }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    setCategories([res.data.category, ...categories])
+    return { success: true, category: res.data.category }
+  } catch (err) {
+    return { success: false, message: err.response?.data?.message || 'Failed to create category' }
   }
+}
 
-  const updateCategory = async (id, name) => {
+
+  const updateCategory = async (id, {name}) => {
     try {
       const res = await api.put(`/category/${id}/cp`, { name }, {
         headers: {

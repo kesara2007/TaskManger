@@ -106,14 +106,17 @@ const TaskForm = ({ initialData = {}, onSubmit, onCancel, categories }) => {
           <label htmlFor="dueDate" className="block text-sm font-medium text-beige-700">
             Due Date
           </label>
-          <DatePicker
-            selected={formData.dueDate}
-            onChange={handleDateChange}
-            className="mt-1 block w-full rounded-md border-beige-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-            dateFormat="MMMM d, yyyy"
-            isClearable
-            placeholderText="Select a date"
-          />
+           <DatePicker
+              selected={formData.dueDate}
+              onChange={handleDateChange}
+              className="mt-1 block w-full rounded-md border-beige-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+              dateFormat="MMMM d, yyyy h:mm aa"
+              showTimeSelect
+              timeFormat="h:mm aa"
+              timeIntervals={15}
+              isClearable
+              placeholderText="Select date and time"
+            />
         </div>
 
         <div className="flex items-center">

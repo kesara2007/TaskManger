@@ -1,22 +1,28 @@
+// middleware/auth.js
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
-const TOKEN_EXPIRES = '7d';
 
 export default async function authMiddleware(req, res, next) {
-    //Grab the bearer token from the authorization header
     const authHeader = req.headers.authorization;
+    
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({success: false, message: "Not Authorized, token missing"});
     }
 
     const token = authHeader.split(' ')[1];
 
-    //verify and attach user object
     try {
         const payload = jwt.verify(token, JWT_SECRET);
-        const user = await User.findById(payload.id).select("password");
+        
+        
+        if (payload.exp && payload.exp < Date.now() / 1000) {
+            return res.status(401).json({success: false, message: "Token expired"});
+        }
+
+        const user = await User.findById(payload.id).select("_id");
+        
         
         if(!user) {
             return res.status(401).json({success: false, message: "User not found"});
@@ -26,7 +32,12 @@ export default async function authMiddleware(req, res, next) {
         next();
 
     } catch (err) {
-        console.log("JWT verification failed ", err);
-        res.status(401).json({success: false, message: "Token invalid or expired "});
+        console.error("JWT verification failed:", err);
+        
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({success: false, message: "Token expired. Please login again"});
+        }
+        
+        res.status(401).json({success: false, message: "Token invalid"});
     }
 }

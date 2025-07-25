@@ -4,31 +4,36 @@ import Category from "../models/categoryModel.js";
 // Create a new category
 export const createCategory = async (req, res) => {
   try {
+    console.log("Received createCategory request");
+    console.log("Request body:", req.body);
+    console.log("User from auth middleware:", req.user);
+
     const { name } = req.body;
 
     if (!name || name.trim() === "") {
       return res.status(400).json({ success: false, message: "Category name is required" });
     }
 
-    const exists = await Category.findOne({ name, owner: req.user.id });
+    const exists = await Category.findOne({ name, owner: req.user._id }); // note _id not id
     if (exists) {
       return res.status(409).json({ success: false, message: "Category already exists" });
     }
 
     const category = new Category({
       name: name.trim(),
-      owner: req.user.id
+      owner: req.user._id, 
     });
 
     const saved = await category.save();
     res.status(201).json({ success: true, category: saved });
   } catch (err) {
-    console.log(err);
+    console.error("Error in createCategory:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
 
-// Get all categories for the logged-in user
+
+// Get all categories 
 export const getCategories = async (req, res) => {
   try {
     const categories = await Category.find({ owner: req.user.id }).sort({ createdAt: -1 });
@@ -38,7 +43,7 @@ export const getCategories = async (req, res) => {
   }
 };
 
-// Get a single category by ID
+// Get a  category by ID
 export const getCategoryById = async (req, res) => {
   try {
     const category = await Category.findOne({ _id: req.params.id, owner: req.user.id });
